@@ -3,5 +3,16 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-# Don't enable this by default
-SYSTEMD_AUTO_ENABLE_${PN} = "disable"
+SRC_URI += " \
+    file://dnsmasq.conf \
+"
+
+SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+
+do_install_append() {
+    install -d ${D}${sysconfdir}
+    install -m 0644 ${WORKDIR}/dnsmasq.conf ${D}${sysconfdir}/dnsmasq.conf
+
+    # install -d ${D}${sysconfdir}/sysctl.d
+    # install -m 0644 ${WORKDIR}/ip_forward.conf ${D}${sysconfdir}/sysctl.d/ip_forward.conf
+}
